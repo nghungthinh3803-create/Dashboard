@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Turnover Rate Miền Nam 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-card.office {
+            border-left-color: #48bb78;
+        }
+        
+        .stat-card.store {
+            border-left-color: #f56565;
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .change {
+            font-size: 14px;
+            color: #48bb78;
+        }
+        
+        .stat-card .change.negative {
+            color: #f56565;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .chart-container.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-container h2 {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .table-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f7fafc;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:hover {
+            background: #f7fafc;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge.good {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .badge.ok {
+            background: #bee3f8;
+            color: #1a365d;
+        }
+        
+        .badge.warning {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+        
+        .badge.critical {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Dashboard Turnover Rate Miền Nam 2025</h1>
+        <p>Phân tích toàn diện tình hình nhân sự theo Văn phòng và Cửa hàng</p>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Tổng nhân sự rời đi</h3>
+            <div class="value">705</div>
+            <div class="change negative">+18.5% vs LY</div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Tổng nhân sự mới</h3>
+            <div class="value">1,072</div>
+            <div class="change">+21.4% vs LY</div>
+        </div>
+        
+        <div class="stat-card office">
+            <h3>Văn phòng - Turnover</h3>
+            <div class="value">21.81%</div>
+            <div class="change">-5.81% vs LY</div>
+        </div>
+        
+        <div class="stat-card store">
+            <h3>Cửa hàng - Turnover</h3>
+            <div class="value">48.37%</div>
+            <div class="change">-6.25% vs LY</div>
+        </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="chart-grid">
+        <!-- Chart 1: So sánh Văn phòng vs Cửa hàng -->
+        <div class="chart-container">
+            <h2>So sánh Văn phòng vs Cửa hàng</h2>
+            <canvas id="comparisonChart"></canvas>
+        </div>
+
+        <!-- Chart 2: Retention Rate -->
+        <div class="chart-container">
+            <h2>Retention Rate 2025</h2>
+            <canvas id="retentionChart"></canvas>
+        </div>
+
+        <!-- Chart 3: Biến động theo tháng - Văn phòng -->
+        <div class="chart-container full-width">
+            <h2>Turnover Rate theo tháng - Văn phòng</h2>
+            <canvas id="officeMonthlyChart"></canvas>
+        </div>
+
+        <!-- Chart 4: Biến động theo tháng - Cửa hàng -->
+        <div class="chart-container full-width">
+            <h2>Turnover Rate theo tháng - Cửa hàng</h2>
+            <canvas id="storeMonthlyChart"></canvas>
+        </div>
+
+        <!-- Chart 5: Top khối có turnover cao -->
+        <div class="chart-container full-width">
+            <h2>Top 10 Khối có Turnover Rate cao nhất</h2>
+            <canvas id="topKhoiChart"></canvas>
+        </div>
+
+        <!-- Chart 6: Phân bố đơn vị theo mức độ -->
+        <div class="chart-container">
+            <h2>Phân bố 76 đơn vị cửa hàng</h2>
+            <canvas id="distributionChart"></canvas>
+        </div>
+
+        <!-- Chart 7: Cơ cấu thâm niên -->
+        <div class="chart-container">
+            <h2>Cơ cấu thâm niên</h2>
+            <canvas id="tenureChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Top đơn vị table -->
+    <div class="table-container">
+        <h2>Top 10 đơn vị cửa hàng có Turnover Rate cao nhất</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Mã đơn vị</th>
+                    <th>Turnover Rate</th>
+                    <th>Nhân sự rời đi</th>
+                    <th>Nhân sự mới</th>
+                    <th>Nhân sự còn lại TB</th>
+                    <th>Mức độ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>CPS-HCM-Q06-1075BHG</td>
+                    <td><strong>125.58%</strong></td>
+                    <td>18</td>
+                    <td>17</td>
+                    <td>14</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>CPS-KGI-PQU-35HV</td>
+                    <td><strong>123.81%</strong></td>
+                    <td>13</td>
+                    <td>15</td>
+                    <td>10</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>CPS-KHO-NTR-3TN</td>
+                    <td><strong>109.09%</strong></td>
+                    <td>13</td>
+                    <td>17</td>
+                    <td>12</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>CPS-HCM-TDU-632AKVC</td>
+                    <td><strong>106.45%</strong></td>
+                    <td>11</td>
+                    <td>8</td>
+                    <td>10</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>CPS-CTH-NKI-272BMTT</td>
+                    <td><strong>105.00%</strong></td>
+                    <td>14</td>
+                    <td>23</td>
+                    <td>13</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>CPS-BTR-BTR-15DK</td>
+                    <td><strong>98.51%</strong></td>
+                    <td>11</td>
+                    <td>8</td>
+                    <td>11</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>CPS-BDI-QNH-669THD</td>
+                    <td><strong>98.36%</strong></td>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>10</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>CPS-HCM-TPH-449TKTQ</td>
+                    <td><strong>97.96%</strong></td>
+                    <td>12</td>
+                    <td>17</td>
+                    <td>12</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>CPS-BDU-TDM-183PL</td>
+                    <td><strong>97.56%</strong></td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>10</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>CPS-HCM-BCH-C3PH</td>
+                    <td><strong>96.55%</strong></td>
+                    <td>14</td>
+                    <td>10</td>
+                    <td>14</td>
+                    <td><span class="badge critical">Cảnh báo khẩn</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Chart 1: Comparison
+        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Turnover Rate (%)', 'Retention Rate (%)', 'Thâm niên TB (năm)', 'NS rời đi', 'NS còn lại TB'],
+                datasets: [{
+                    label: 'Văn phòng',
+                    data: [21.81, 81.47, 1.83, 114, 562],
+                    backgroundColor: 'rgba(72, 187, 120, 0.8)',
+                    borderColor: 'rgba(72, 187, 120, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Cửa hàng',
+                    data: [48.37, 71.67, 1.48, 591, 1223],
+                    backgroundColor: 'rgba(245, 101, 101, 0.8)',
+                    borderColor: 'rgba(245, 101, 101, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Retention Rate
+        const retentionCtx = document.getElementById('retentionChart').getContext('2d');
+        new Chart(retentionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Văn phòng', 'Cửa hàng'],
+                datasets: [{
+                    data: [81.47, 71.67],
+                    backgroundColor: [
+                        'rgba(72, 187, 120, 0.8)',
+                        'rgba(245, 101, 101, 0.8)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Office Monthly
+        const officeMonthlyCtx = document.getElementById('officeMonthlyChart').getContext('2d');
+        new Chart(officeMonthlyCtx, {
+            type: 'line',
+            data: {
+                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                datasets: [{
+                    label: 'Turnover Rate (%)',
+                    data: [0.82, 1.22, 1.22, 2.81, 1.98, 2.54, 2.71, 2.66, 1.87, 1.29, 2.18, 0.90],
+                    borderColor: 'rgba(72, 187, 120, 1)',
+                    backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 6
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Chart 4: Store Monthly
+        const storeMonthlyCtx = document.getElementById('storeMonthlyChart').getContext('2d');
+        new Chart(storeMonthlyCtx, {
+            type: 'line',
+            data: {
+                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                datasets: [{
+                    label: 'Turnover Rate (%)',
+                    data: [3.59, 4.95, 5.32, 4.86, 5.02, 3.76, 5.45, 5.93, 3.40, 4.63, 5.29, 3.83],
+                    borderColor: 'rgba(245, 101, 101, 1)',
+                    backgroundColor: 'rgba(245, 101, 101, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 7
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Chart 5: Top Khối
+        const topKhoiCtx = document.getElementById('topKhoiChart').getContext('2d');
+        new Chart(topKhoiCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Phòng Data\nAnalyst',
+                    'Khối vận hành\nmiền Nam',
+                    'Khối Kho Vận\nmiền Nam',
+                    'Khối chăm sóc\nkhách hàng',
+                    'Khối\nMarketing',
+                    'Khối Công nghệ\nThông tin',
+                    'Khối Tài chính\nkế toán MN',
+                    'Khối\nkinh doanh',
+                    'Phòng Kiểm soát\nnội bộ',
+                    'Khối nhân sự\nmiền Nam'
+                ],
+                datasets: [{
+                    label: 'Turnover Rate (%)',
+                    data: [86.49, 54.10, 34.58, 28.15, 23.63, 20.00, 17.31, 15.37, 11.46, 9.68],
+                    backgroundColor: [
+                        'rgba(220, 38, 38, 0.8)',
+                        'rgba(220, 38, 38, 0.8)',
+                        'rgba(251, 146, 60, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(34, 197, 94, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Chart 6: Distribution
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Tốt (<10%)',
+                    'Khá (10-20%)',
+                    'Trung bình (20-30%)',
+                    'Cảnh báo (30-50%)',
+                    'Cảnh báo khẩn (>=50%)'
+                ],
+                datasets: [{
+                    data: [4, 8, 9, 18, 37],
+                    backgroundColor: [
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(251, 146, 60, 0.8)',
+                        'rgba(220, 38, 38, 0.8)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Chart 7: Tenure
+        const tenureCtx = document.getElementById('tenureChart').getContext('2d');
+        new Chart(tenureCtx, {
+            type: 'bar',
+            data: {
+                labels: ['<1 năm', '1-2 năm', '2-3 năm', '3-4 năm', '4-5 năm', '>5 năm'],
+                datasets: [{
+                    label: 'Văn phòng (%)',
+                    data: [27.18, 18.83, 9.06, 14.56, 15.99, 14.39],
+                    backgroundColor: 'rgba(72, 187, 120, 0.8)'
+                }, {
+                    label: 'Cửa hàng (%)',
+                    data: [42.61, 25.49, 16.15, 6.90, 7.87, 1],
+                    backgroundColor: 'rgba(245, 101, 101, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 50
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
